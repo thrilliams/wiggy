@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         wiggy
 // @namespace    https://aethre.co/
-// @version      2024-04-05
+// @version      2024-04-07
 // @updateURL    https://github.com/thrilliams/wiggy/raw/main/wiggy.user.js
 // @supportURL   https://github.com/thrilliams/wiggy/issues
 // @description  makes whenisgood slightly more bearable
@@ -13,6 +13,46 @@
 
 /* boilerplate */
 "use strict";
+
+// this counts how many dots or similar are being diplayed in a given slots
+function countSlotUnavailable(slot) {
+	const cantCountElt = slot.querySelector(".cantCount");
+
+	const dots = cantCountElt.querySelector("img");
+	if (dots !== null) {
+		const [_, count] = dots.src.match(/dot(\d)\.gif$/);
+		return parseInt(count);
+	}
+
+	const count = cantCountElt.innerText;
+	return parseInt(count) || 0;
+}
+
+// this makes each cell color-coded to the number of people who can't make that time
+function paintUnavailable() {
+	const slots = [...document.querySelectorAll(".slot")];
+
+	const cantCounts = slots.map((slot) => countSlotUnavailable(slot));
+	const maxCant = Math.max(...cantCounts);
+
+	for (let i in slots) {
+		const slot = slots[i];
+		const proportion = cantCounts[i] / maxCant || 0;
+
+		const cantCountStyle = slot.querySelector(".cantCount")?.style;
+		if (cantCountStyle !== undefined) cantCountStyle.display = "none";
+
+		slot.style.backgroundColor = `color-mix(in srgb, #ff0000 ${Math.floor(
+			proportion * 100
+		)}%, #00ff00)`;
+	}
+}
+
+// this function wraps the normal whenisgood paint function so we can do our own thing
+function paint() {
+	unsafeWindow.paintCanDos();
+	paintUnavailable();
+}
 
 // this removes the default WiG systems
 const oldContainer = document.querySelector(".respondents");
@@ -29,7 +69,7 @@ oldContainer.after(appContainer);
 appContainer.innerText = "loading...";
 
 // this tweaks table formatting slightly to make it consistent and avoid layout shifting
-for (const element of document.querySelectorAll("td.slot"))
+for (const element of document.querySelectorAll(".slot"))
 	element.style.minWidth = "90px";
 
 // hack to make name highlighting (specifically, de-highlighting) work again
@@ -116,7 +156,7 @@ function App() {
 		for (const [id, respondent] of respondents.entries())
 			respondent.included = newIds.includes(id);
 		setIncludedIdsRaw(newIds);
-		unsafeWindow.paintCanDos();
+		paint();
 	};
 
 	const setIncluded = (id, value) => {
@@ -189,3 +229,4 @@ function App() {
 
 appContainer.innerText = "";
 render(html`<${App} />`, appContainer);
+paintUnavailable();
