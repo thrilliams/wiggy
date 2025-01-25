@@ -1,0 +1,19 @@
+{
+	"name": "wiggy",
+	"module": "src/index.ts",
+	"type": "module",
+	"scripts": {
+		"build": "bun run build.ts"
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"esbuild": "^0.24.2"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"fuse.js": "^7.0.0",
+		"preact": "^10.25.4"
+	}
+}
