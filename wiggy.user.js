@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         wiggy
 // @namespace    https://aethre.co/
-// @version      2025-01-25
+// @version      2025-01-26
 // @downloadURL  https://github.com/thrilliams/wiggy/raw/main/wiggy.user.js
 // @updateURL    https://github.com/thrilliams/wiggy/raw/main/wiggy.user.js
 // @supportURL   https://github.com/thrilliams/wiggy/issues
