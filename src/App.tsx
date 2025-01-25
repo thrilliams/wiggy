@@ -38,17 +38,17 @@ export function App() {
 				new Date(a.updated).getTime() - new Date(b.updated).getTime()
 		);
 
+	const toggleAll = () => {
+		if (includedIds.length > respondentIds.length / 2) {
+			setIncludedIds([]);
+		} else {
+			setIncludedIds([...respondentIds]);
+		}
+	};
+
 	return (
 		<div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-			<button
-				onClick={() =>
-					setIncludedIds(
-						respondentIds.filter((id) => !includedIds.includes(id))
-					)
-				}
-			>
-				toggle all
-			</button>
+			<button onClick={toggleAll}>toggle all</button>
 			<select
 				onChange={(event) => setSortMode(event.currentTarget.value)}
 			>
