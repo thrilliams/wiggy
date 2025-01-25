@@ -15,8 +15,12 @@ export function paintUnavailable() {
 			.style;
 		if (cantCountStyle !== undefined) cantCountStyle.display = "none";
 
-		slot.style.backgroundColor = `color-mix(in srgb, #ff0000 ${Math.floor(
-			proportion * 100
-		)}%, #00ff00)`;
+		if (proportion === 0) {
+			slot.style.backgroundColor = "#dddd00";
+		} else {
+			slot.style.backgroundColor = `color-mix(in srgb, #ff0000 ${Math.floor(
+				proportion * 100
+			)}%, #00ff00)`;
+		}
 	}
 }
